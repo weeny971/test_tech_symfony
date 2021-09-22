@@ -10,8 +10,8 @@
             </div>
             Veuillez sélectionner une newsletter
             <div class="row">
-                Newsletter(s):{{ form_widget(form.news) }}
-                <input type="submit">
+                Newsletter(s):{{ form_widget(form.news) }}<input type="submit">
+                <h4>{{ form_errors(form.news) }}</h4>
             </div>
         </h2>
     {{ form_end(form) }}

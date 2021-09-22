@@ -50,11 +50,11 @@ class SendNewsletterCommand extends Command
                 $io->note(sprintf('Newsletter found: %s', $arg1));
 
                 do {
-                    $subscribers = $this->em->getRepository('App:UserNewsletter')->findByNewsLetter($arg1, $this->limit, $this->offset);
+                    $subscribers = $this->em->getRepository('App:User')->findByNewsLetter($arg1, $this->limit, $this->offset);
                     $this->offset = $this->limit + $this->offset;
                     $this->em->clear();
 
-                    $this->sendMail($subscribers);
+                    $this->sendMails($subscribers, $newsletter->getName());
 
                 } while ($subscribers);
 
@@ -71,16 +71,16 @@ class SendNewsletterCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function sendMail($subscribers){
+    private function sendMails($subscribers, $newsletter){
 
         foreach ( $subscribers as $subscriber ){
 
-            $message = (new \Swift_Message('Newsletter '.$subscriber->getNews()->getName()))
-                ->setTo($subscriber->getUser()->getEmail())
+            $message = (new \Swift_Message('Newsletter '.$newsletter))
+                ->setTo($subscriber->getEmail())
                 ->setBody($this->twig->render(
                     'emails/newsletter.html.twig', [
-                        'newsletter' => $subscriber->getNews()->getName(),
-                        'prenom' => $subscriber->getUser()->getName(),
+                        'newsletter' => $newsletter,
+                        'prenom' => $subscriber->getName(),
 
                     ]
                 ), 'text/html');

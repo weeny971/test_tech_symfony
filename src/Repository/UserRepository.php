@@ -22,15 +22,24 @@ class UserRepository extends ServiceEntityRepository
     public function findByNewsLetter(int $value, ?int $limit = null, ?int $offset = null)
     {
         return $this->createQueryBuilder('u')
-            ->leftJoin('u.news', 'n')
-            ->andWhere('n.id = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setFirstResult( $offset )
-            ->setMaxResults( $limit )
-            ->getQuery()
-            ->getResult()
-            ;
+                    ->leftJoin(
+                        'App\Entity\UserNewsletter',
+                        'un',
+                        \Doctrine\ORM\Query\Expr\Join::WITH,
+                        'un.user = u.id'
+                    )
+                    ->leftJoin(
+                        'App\Entity\Newsletter',
+                        'n',
+                        \Doctrine\ORM\Query\Expr\Join::WITH,
+                        'un.news = n.id'
+                    )
+                    ->where('n.id = :val')
+                    ->setParameter('val', $value)
+                    ->setFirstResult( $offset )
+                    ->setMaxResults( $limit )
+                    ->getQuery()
+                    ->getResult();
     }
 
     // /**

@@ -19,20 +19,6 @@ class UserNewsletterRepository extends ServiceEntityRepository
         parent::__construct($registry, UserNewsletter::class);
     }
 
-    public function findByNewsLetter(int $value, ?int $limit = null, ?int $offset = null)
-    {
-        return $this->createQueryBuilder('u')
-            ->leftJoin('u.news', 'n')
-            ->andWhere('n.id = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.user', 'ASC')
-            ->setFirstResult( $offset )
-            ->setMaxResults( $limit )
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
     // /**
     //  * @return UserNewsletter[] Returns an array of UserNewsletter objects
     //  */
