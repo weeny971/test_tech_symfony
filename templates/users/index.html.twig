@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NewsletterController!{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <h2>
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+        Veuillez sélectionner un utilisateur
+        <div class="row">
+            <div class="col">
+                {{ form_widget(form.user) }}
+                {{ form_errors(form.user) }}
+                <input type="submit">
+            </div>
+        </div>
+    </h2>
+    {{ form_end(form) }}
+{% endblock %}
